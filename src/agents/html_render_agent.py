@@ -51,7 +51,7 @@ def _fix_font_stack(html: str) -> str:
 
 def _comma(value: object) -> str:
     try:
-        return f"{int(value):,}"
+        return f"{int(float(str(value))):,}"
     except (ValueError, TypeError):
         return str(value)
 

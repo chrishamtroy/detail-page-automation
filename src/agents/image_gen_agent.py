@@ -91,15 +91,22 @@ def _call_gemini_image_api(image_prompt: str) -> bytes | None:
             response_modalities=["IMAGE", "TEXT"],
         ),
     )
-    for part in response.candidates[0].content.parts:
-        if part.inline_data and part.inline_data.mime_type.startswith("image/"):
-            return base64.b64decode(part.inline_data.data)
+    candidates = response.candidates or []
+    if not candidates:
+        return None
+    content = candidates[0].content
+    if content is None:
+        return None
+    for part in content.parts or []:
+        inline = part.inline_data
+        if inline and inline.mime_type and inline.mime_type.startswith("image/") and inline.data:
+            return base64.b64decode(inline.data)
     return None
 
 
 def _resize_to_bytes(image_bytes: bytes, width: int, height: int) -> bytes:
-    img = Image.open(io.BytesIO(image_bytes))
-    img = img.resize((width, height), Image.LANCZOS)
+    img = Image.open(io.BytesIO(image_bytes)).convert("RGB")
+    img = img.resize((width, height), Image.Resampling.LANCZOS)
     buf = io.BytesIO()
     img.save(buf, format="PNG")
     return buf.getvalue()

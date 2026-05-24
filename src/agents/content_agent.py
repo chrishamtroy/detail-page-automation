@@ -1,5 +1,6 @@
 import json
 import anthropic
+from anthropic.types import TextBlock
 from loguru import logger
 from tenacity import retry, stop_after_attempt, wait_exponential
 from src.config import get_anthropic_key, CLAUDE_MODEL
@@ -230,4 +231,7 @@ async def generate_copy(section_id: str, product_data: dict) -> dict:
         f"[{section_id}] Claude tokens: in={usage.input_tokens} out={usage.output_tokens}"
     )
 
-    return _parse_json(response.content[0].text)
+    first = response.content[0]
+    if not isinstance(first, TextBlock):
+        raise ValueError(f"Unexpected response type from Claude: {type(first)}")
+    return _parse_json(first.text)

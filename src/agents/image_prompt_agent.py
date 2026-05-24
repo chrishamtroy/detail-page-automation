@@ -50,7 +50,10 @@ def _call_gemini_text(prompt: str) -> str:
         model=GEMINI_TEXT_MODEL,
         contents=prompt,
     )
-    return response.text.strip()
+    text = response.text
+    if not text:
+        raise ValueError("Empty response from Gemini text model")
+    return text.strip()
 
 
 async def generate_image_prompt(

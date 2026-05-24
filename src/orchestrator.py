@@ -50,27 +50,17 @@ async def _run_sections(
             await run_section(only_section, product_data, output_dir, browser_pool, dry_run)
         ]
 
-    kwargs = dict(
-        product_data=product_data,
-        output_dir=output_dir,
-        browser_pool=browser_pool,
-        dry_run=dry_run,
-    )
+    async def _task(s: str) -> dict:
+        return await run_section(s, product_data, output_dir, browser_pool, dry_run)
 
     logger.info("[Batch A] 섹션 01~05 병렬 생성")
-    results_a = await asyncio.gather(
-        *[run_section(s, **kwargs) for s in SECTIONS[0:5]]
-    )
+    results_a = await asyncio.gather(*[_task(s) for s in SECTIONS[0:5]])
 
     logger.info("[Batch B] 섹션 06~10 병렬 생성")
-    results_b = await asyncio.gather(
-        *[run_section(s, **kwargs) for s in SECTIONS[5:10]]
-    )
+    results_b = await asyncio.gather(*[_task(s) for s in SECTIONS[5:10]])
 
     logger.info("[Batch C] 섹션 11~13 병렬 생성")
-    results_c = await asyncio.gather(
-        *[run_section(s, **kwargs) for s in SECTIONS[10:]]
-    )
+    results_c = await asyncio.gather(*[_task(s) for s in SECTIONS[10:]])
 
     return list(results_a) + list(results_b) + list(results_c)
 
