@@ -12,6 +12,12 @@ async def run_section(
     browser_pool: BrowserPool,
     dry_run: bool = False,
 ) -> dict:
+    # 이미 완료된 섹션은 재생성하지 않음 (--resume 지원)
+    output_path = output_dir / f"section_{section_id}.png"
+    if output_path.exists():
+        print(f"  [{section_id}] 체크포인트 복원 → {output_path.name}")
+        return {"section_id": section_id, "status": "done", "output_path": str(output_path)}
+
     result: dict = {"section_id": section_id, "status": "pending"}
 
     try:

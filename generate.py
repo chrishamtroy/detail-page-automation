@@ -75,6 +75,13 @@ async def main() -> None:
         action="store_true",
         help="API 호출 없이 카피만 생성 (이미지/렌더링 스킵)",
     )
+    parser.add_argument(
+        "--resume",
+        type=str,
+        default=None,
+        metavar="RUN_ID",
+        help="중단된 실행 재개 (예: --resume 20260524_123456)",
+    )
     args = parser.parse_args()
 
     print_banner()
@@ -84,8 +91,16 @@ async def main() -> None:
     print(f"상품: {product_name}")
     print(f"입력: {args.input}")
 
-    run_id = datetime.now().strftime("%Y%m%d_%H%M%S")
-    output_dir = args.output or OUTPUT_DIR / run_id
+    if args.resume:
+        run_id = args.resume
+        output_dir = OUTPUT_DIR / run_id
+        if not output_dir.exists():
+            raise FileNotFoundError(f"재개 대상 디렉터리 없음: {output_dir}")
+        print(f"재개: {output_dir}")
+    else:
+        run_id = datetime.now().strftime("%Y%m%d_%H%M%S")
+        output_dir = args.output or OUTPUT_DIR / run_id
+
     output_dir.mkdir(parents=True, exist_ok=True)
     print(f"출력: {output_dir}\n")
 

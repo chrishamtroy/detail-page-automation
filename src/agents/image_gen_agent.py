@@ -4,6 +4,7 @@ import io
 from PIL import Image, ImageDraw
 from google import genai
 from google.genai import types
+from tenacity import retry, stop_after_attempt, wait_exponential
 from src.config import get_gemini_key, GEMINI_IMAGE_MODEL, SECTION_WIDTH
 
 _client: genai.Client | None = None
@@ -75,21 +76,22 @@ def _gradient_fallback(section_id: str, width: int, height: int) -> bytes:
     return buf.getvalue()
 
 
+@retry(
+    stop=stop_after_attempt(2),
+    wait=wait_exponential(multiplier=1, min=3, max=15),
+)
 def _call_gemini_image_api(image_prompt: str) -> bytes | None:
-    try:
-        client = _get_client()
-        response = client.models.generate_content(
-            model=GEMINI_IMAGE_MODEL,
-            contents=image_prompt,
-            config=types.GenerateContentConfig(
-                response_modalities=["IMAGE", "TEXT"],
-            ),
-        )
-        for part in response.candidates[0].content.parts:
-            if part.inline_data and part.inline_data.mime_type.startswith("image/"):
-                return base64.b64decode(part.inline_data.data)
-    except Exception:
-        pass
+    client = _get_client()
+    response = client.models.generate_content(
+        model=GEMINI_IMAGE_MODEL,
+        contents=image_prompt,
+        config=types.GenerateContentConfig(
+            response_modalities=["IMAGE", "TEXT"],
+        ),
+    )
+    for part in response.candidates[0].content.parts:
+        if part.inline_data and part.inline_data.mime_type.startswith("image/"):
+            return base64.b64decode(part.inline_data.data)
     return None
 
 
@@ -107,11 +109,15 @@ async def generate_background(
     height = SECTION_HEIGHTS.get(section_id, 600)
     semaphore = _get_semaphore()
 
+    image_bytes: bytes | None = None
     async with semaphore:
         loop = asyncio.get_event_loop()
-        image_bytes = await loop.run_in_executor(
-            None, _call_gemini_image_api, image_prompt
-        )
+        try:
+            image_bytes = await loop.run_in_executor(
+                None, _call_gemini_image_api, image_prompt
+            )
+        except Exception:
+            pass  # 재시도 소진 후 폴백으로 진행
 
     if image_bytes:
         resized = _resize_to_bytes(image_bytes, SECTION_WIDTH, height)

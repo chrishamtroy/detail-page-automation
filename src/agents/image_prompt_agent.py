@@ -1,6 +1,7 @@
 import asyncio
 import json
 from google import genai
+from tenacity import retry, stop_after_attempt, wait_exponential
 from src.config import get_gemini_key, GEMINI_TEXT_MODEL
 
 _client: genai.Client | None = None
@@ -38,6 +39,11 @@ SECTION_STYLE_HINTS: dict[str, str] = {
 }
 
 
+@retry(
+    reraise=True,
+    stop=stop_after_attempt(3),
+    wait=wait_exponential(multiplier=1, min=2, max=30),
+)
 def _call_gemini_text(prompt: str) -> str:
     client = _get_client()
     response = client.models.generate_content(

@@ -8,3 +8,6 @@ __pycache__/
 venv/
 *.egg-info/
 .DS_Store
+static/tailwind.js
+static/noto-sans-kr.css
+static/fonts/

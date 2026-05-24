@@ -4,6 +4,50 @@ from jinja2 import Environment, FileSystemLoader
 from playwright.async_api import async_playwright, Browser, Playwright
 from src.config import TEMPLATE_DIR, SECTION_WIDTH
 
+_STATIC_DIR = Path(__file__).parent.parent.parent / "static"
+
+# Module-level cache so assets are read from disk once per process
+_TAILWIND_JS: str | None = None
+_NOTO_CSS: str | None = None
+
+
+def _load_static_assets() -> tuple[str, str]:
+    global _TAILWIND_JS, _NOTO_CSS
+    if _TAILWIND_JS is None:
+        js_path = _STATIC_DIR / "tailwind.js"
+        _TAILWIND_JS = js_path.read_text(encoding="utf-8") if js_path.exists() else ""
+    if _NOTO_CSS is None:
+        css_path = _STATIC_DIR / "noto-sans-kr.css"
+        _NOTO_CSS = css_path.read_text(encoding="utf-8") if css_path.exists() else ""
+    return _TAILWIND_JS, _NOTO_CSS
+
+
+def _inject_local_assets(html: str) -> str:
+    """CDN 참조를 인라인 로컬 자산으로 교체한다."""
+    tailwind_js, noto_css = _load_static_assets()
+
+    # Tailwind Play CDN 스크립트 태그 → 인라인 JS
+    if tailwind_js:
+        html = html.replace(
+            '<script src="https://cdn.tailwindcss.com"></script>',
+            f"<script>{tailwind_js}</script>",
+        )
+
+    # 폰트 CSS → </head> 직전에 삽입
+    if noto_css and "</head>" in html:
+        font_tag = f"<style>{noto_css}</style>"
+        html = html.replace("</head>", f"{font_tag}\n</head>", 1)
+
+    return html
+
+
+def _fix_font_stack(html: str) -> str:
+    """Apple 전용 폰트를 크로스플랫폼 스택으로 교체한다."""
+    return html.replace(
+        "'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif",
+        "'Apple SD Gothic Neo', 'Malgun Gothic', 'Noto Sans KR', sans-serif",
+    )
+
 
 def _comma(value: object) -> str:
     try:
@@ -50,6 +94,9 @@ class BrowserPool:
     ) -> Path:
         assert self._browser is not None, "BrowserPool.start()를 먼저 호출하세요."
         assert self._semaphore is not None
+
+        html_content = _inject_local_assets(html_content)
+        html_content = _fix_font_stack(html_content)
 
         async with self._semaphore:
             page = await self._browser.new_page(

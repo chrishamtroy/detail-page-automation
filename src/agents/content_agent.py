@@ -1,5 +1,6 @@
 import json
 import anthropic
+from tenacity import retry, stop_after_attempt, wait_exponential
 from src.config import get_anthropic_key, CLAUDE_MODEL
 
 _client: anthropic.AsyncAnthropic | None = None
@@ -200,6 +201,11 @@ def _parse_json(text: str) -> dict:
     return json.loads(text)
 
 
+@retry(
+    reraise=True,
+    stop=stop_after_attempt(3),
+    wait=wait_exponential(multiplier=1, min=2, max=30),
+)
 async def generate_copy(section_id: str, product_data: dict) -> dict:
     prompt = f"""다음 상품 정보를 바탕으로 {section_id} 섹션 카피를 작성하세요.
 
