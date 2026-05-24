@@ -1,7 +1,9 @@
 import json
 import anthropic
+from loguru import logger
 from tenacity import retry, stop_after_attempt, wait_exponential
 from src.config import get_anthropic_key, CLAUDE_MODEL
+from src.cost_tracker import get_tracker
 
 _client: anthropic.AsyncAnthropic | None = None
 
@@ -220,6 +222,12 @@ async def generate_copy(section_id: str, product_data: dict) -> dict:
         max_tokens=2048,
         system=SYSTEM_PROMPT,
         messages=[{"role": "user", "content": prompt}],
+    )
+
+    usage = response.usage
+    get_tracker().add_claude(section_id, usage.input_tokens, usage.output_tokens)
+    logger.debug(
+        f"[{section_id}] Claude tokens: in={usage.input_tokens} out={usage.output_tokens}"
     )
 
     return _parse_json(response.content[0].text)

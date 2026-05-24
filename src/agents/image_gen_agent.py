@@ -4,8 +4,10 @@ import io
 from PIL import Image, ImageDraw
 from google import genai
 from google.genai import types
+from loguru import logger
 from tenacity import retry, stop_after_attempt, wait_exponential
 from src.config import get_gemini_key, GEMINI_IMAGE_MODEL, SECTION_WIDTH
+from src.cost_tracker import get_tracker
 
 _client: genai.Client | None = None
 _semaphore: asyncio.Semaphore | None = None
@@ -104,7 +106,7 @@ def _resize_to_bytes(image_bytes: bytes, width: int, height: int) -> bytes:
 
 
 async def generate_background(
-    section_id: str, image_prompt: str, product_data: dict
+    section_id: str, image_prompt: str, product_data: dict  # noqa: ARG001
 ) -> str:
     height = SECTION_HEIGHTS.get(section_id, 600)
     semaphore = _get_semaphore()
@@ -120,8 +122,11 @@ async def generate_background(
             pass  # 재시도 소진 후 폴백으로 진행
 
     if image_bytes:
+        get_tracker().add_gemini_image(section_id)
+        logger.debug(f"[{section_id}] Gemini 이미지 생성 성공")
         resized = _resize_to_bytes(image_bytes, SECTION_WIDTH, height)
         return "data:image/png;base64," + base64.b64encode(resized).decode()
 
+    logger.warning(f"[{section_id}] Gemini 이미지 실패 → 그라디언트 폴백")
     fallback = _gradient_fallback(section_id, SECTION_WIDTH, height)
     return "data:image/png;base64," + base64.b64encode(fallback).decode()

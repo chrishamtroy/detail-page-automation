@@ -2,6 +2,7 @@ import asyncio
 import io
 from pathlib import Path
 from PIL import Image
+from loguru import logger
 from src.config import SECTIONS
 from src.agents.section_coordinator import run_section
 from src.agents.html_render_agent import BrowserPool
@@ -56,17 +57,17 @@ async def _run_sections(
         dry_run=dry_run,
     )
 
-    print("\n[Batch A] 섹션 01~05 병렬 생성")
+    logger.info("[Batch A] 섹션 01~05 병렬 생성")
     results_a = await asyncio.gather(
         *[run_section(s, **kwargs) for s in SECTIONS[0:5]]
     )
 
-    print("\n[Batch B] 섹션 06~10 병렬 생성")
+    logger.info("[Batch B] 섹션 06~10 병렬 생성")
     results_b = await asyncio.gather(
         *[run_section(s, **kwargs) for s in SECTIONS[5:10]]
     )
 
-    print("\n[Batch C] 섹션 11~13 병렬 생성")
+    logger.info("[Batch C] 섹션 11~13 병렬 생성")
     results_c = await asyncio.gather(
         *[run_section(s, **kwargs) for s in SECTIONS[10:]]
     )
@@ -95,4 +96,4 @@ def _merge_images(results: list[dict], output_dir: Path) -> None:
 
     out = output_dir / "final_output.png"
     merged.save(out, "PNG", optimize=True)
-    print(f"\n최종 합본 저장: {out}")
+    logger.success(f"최종 합본 저장: {out}")
