@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<script src="https://cdn.tailwindcss.com"></script>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { width: 1200px; font-family: 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif; }
+  .section-wrapper { width: 1200px; min-height: 650px; position: relative; overflow: hidden; }
+  .bg-image { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; z-index: 0; }
+  .bg-overlay { position: absolute; inset: 0; z-index: 1; background: rgba(10,10,30,0.8); }
+  .content { position: relative; z-index: 2; }
+  .arrow { font-size: 3rem; color: {{ color_primary }}; }
+</style>
+</head>
+<body>
+<div class="section-wrapper">
+  <img src="{{ background }}" class="bg-image" alt="">
+  <div class="bg-overlay"></div>
+  <div class="content px-16 py-14">
+    <div class="grid grid-cols-2 gap-8 mb-10">
+      <div class="bg-gray-900 bg-opacity-80 border border-gray-600 rounded-2xl p-8">
+        <div class="text-gray-400 text-sm font-bold tracking-widest mb-4">BEFORE</div>
+        <p class="text-gray-300 text-xl leading-relaxed">{{ copy.before }}</p>
+      </div>
+      <div class="rounded-2xl p-8 border-2" style="background: linear-gradient(135deg, {{ color_primary }}20, {{ color_primary }}10); border-color: {{ color_primary }};">
+        <div class="text-sm font-bold tracking-widest mb-4" style="color: {{ color_primary }};">AFTER</div>
+        <p class="text-white text-xl leading-relaxed font-bold">{{ copy.after }}</p>
+      </div>
+    </div>
+    <div class="text-center mb-6">
+      <p class="text-gray-400 text-lg italic">"{{ copy.turning_point }}"</p>
+    </div>
+    <div class="text-center py-4 px-8 rounded-full inline-block mx-auto" style="background: {{ color_primary }};">
+      <p class="text-white text-xl font-black">{{ copy.proof }}</p>
+    </div>
+  </div>
+</div>
+</body>
+</html>

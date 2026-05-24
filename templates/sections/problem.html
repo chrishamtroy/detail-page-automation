@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<script src="https://cdn.tailwindcss.com"></script>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { width: 1200px; font-family: 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif; }
+  .section-wrapper { width: 1200px; min-height: 600px; position: relative; overflow: hidden; background: #0f0f1a; }
+  .bg-image { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; z-index: 0; opacity: 0.3; }
+  .content { position: relative; z-index: 2; }
+</style>
+</head>
+<body>
+<div class="section-wrapper">
+  <img src="{{ background }}" class="bg-image" alt="">
+  <div class="content px-20 py-16">
+    <h2 class="text-center text-white text-4xl font-black mb-12">{{ copy.hook }}</h2>
+    <div class="flex flex-col gap-5 mb-12 max-w-3xl mx-auto">
+      {% for reason in copy.reasons %}
+      <div class="flex items-center gap-4 bg-white bg-opacity-5 border border-red-500 border-opacity-30 rounded-xl p-5">
+        <span class="text-red-400 text-2xl font-black">✕</span>
+        <p class="text-gray-200 text-lg">{{ reason }}</p>
+      </div>
+      {% endfor %}
+    </div>
+    <div class="bg-white bg-opacity-10 border rounded-2xl p-8 max-w-3xl mx-auto text-center" style="border-color: {{ color_primary }}40;">
+      <p class="text-white text-xl font-bold">{{ copy.reframe }}</p>
+    </div>
+  </div>
+</div>
+</body>
+</html>

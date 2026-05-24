@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<script src="https://cdn.tailwindcss.com"></script>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { width: 1200px; font-family: 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif; }
+  .section-wrapper { width: 1200px; min-height: 700px; position: relative; overflow: hidden; background: #f8f9fa; }
+  .bg-image { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; z-index: 0; opacity: 0.1; }
+  .content { position: relative; z-index: 2; }
+</style>
+</head>
+<body>
+<div class="section-wrapper">
+  <img src="{{ background }}" class="bg-image" alt="">
+  <div class="content px-20 py-16">
+    <h2 class="text-center text-4xl font-black mb-14" style="color: {{ color_secondary }};">{{ copy.headline }}</h2>
+    <div class="grid grid-cols-3 gap-8">
+      {% for step in copy.steps %}
+      <div class="bg-white rounded-2xl p-8 shadow-lg text-center">
+        <div class="w-16 h-16 rounded-full flex items-center justify-center text-white text-2xl font-black mx-auto mb-5" style="background: {{ color_primary }};">{{ step.number }}</div>
+        <h3 class="text-xl font-black mb-3" style="color: {{ color_secondary }};">{{ step.title }}</h3>
+        <p class="text-gray-600 text-sm leading-relaxed mb-4">{{ step.description }}</p>
+        <p class="text-sm font-bold" style="color: {{ color_primary }};">→ {{ step.result }}</p>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</div>
+</body>
+</html>

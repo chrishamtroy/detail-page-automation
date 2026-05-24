@@ -1,0 +1,102 @@
+{
+  "brand": {
+    "name": "슬림핏 랩",
+    "tagline": "과학이 만든 몸매 변화",
+    "color_primary": "#FF6B35",
+    "color_secondary": "#1A1A2E",
+    "color_accent": "#F7C59F"
+  },
+  "product": {
+    "name": "슬림핏 에센스",
+    "category": "다이어트 보조제",
+    "price": 89000,
+    "original_price": 178000,
+    "discount_rate": 50,
+    "key_benefits": [
+      "8주 평균 -5.2kg 체중 감소",
+      "식욕 억제 + 기초대사량 향상",
+      "부작용 없는 천연 성분",
+      "하루 1캡슐로 간편한 복용"
+    ],
+    "ingredients_or_specs": [
+      "가르시니아 캄보지아 추출물 500mg",
+      "녹차 추출물 200mg",
+      "L-카르니틴 100mg",
+      "크롬 피콜리네이트 200mcg"
+    ],
+    "usage_steps": [
+      "매일 아침 식사 30분 전에 1캡슐 복용",
+      "물 250ml 이상과 함께 섭취",
+      "8주 이상 꾸준히 복용"
+    ],
+    "target_customer": "30~50대 여성, 바쁜 직장인, 운동 시간이 부족한 분",
+    "pain_points": [
+      "운동해도 살이 안 빠지는 느낌",
+      "식단 조절이 너무 힘들어서 작심삼일",
+      "다이어트 제품 많이 써봤는데 효과 없음",
+      "몸무게는 그대로인데 배만 나와서 자신감 하락"
+    ],
+    "transformation": {
+      "before": "매일 저울 올라가기 두렵고, 옷이 점점 작아지는 느낌",
+      "after": "8주 후 -5kg, 거울 보는 게 즐거워진 일상"
+    }
+  },
+  "social_proof": {
+    "review_count": 2847,
+    "avg_rating": 4.8,
+    "repurchase_rate": 78,
+    "testimonials": [
+      {
+        "name": "김지영",
+        "age": 38,
+        "location": "서울",
+        "result": "8주 만에 -6kg",
+        "comment": "반신반의했는데 진짜 빠졌어요. 식욕이 줄어드니까 자연스럽게 덜 먹게 되더라고요."
+      },
+      {
+        "name": "박소연",
+        "age": 45,
+        "location": "부산",
+        "result": "3개월 -11kg",
+        "comment": "40대 넘어서 살 빼는 게 너무 힘들었는데, 이건 진짜 달라요. 재구매 중입니다."
+      },
+      {
+        "name": "이수민",
+        "age": 32,
+        "location": "대구",
+        "result": "2달 -4.5kg",
+        "comment": "직장 다니면서 운동할 시간이 없어서 먹기만 했는데 효과 봤어요!"
+      }
+    ]
+  },
+  "authority": {
+    "expert_name": "김현우 박사",
+    "title": "영양의학 전문의",
+    "credentials": [
+      "서울대학교 의과대학 졸업",
+      "대한비만학회 정회원",
+      "임상 영양 연구 15년 경력",
+      "저서: 『과학적 다이어트의 모든 것』"
+    ],
+    "story": "15년간 다이어트에 실패한 3,000명 이상의 환자를 치료하면서, 의지력이 아니라 대사 메커니즘을 바꿔야 한다는 것을 깨달았습니다."
+  },
+  "offer": {
+    "deadline": "2026-05-31",
+    "stock_remaining": 47,
+    "bonus_items": [
+      {
+        "name": "슬림핏 식단 가이드 북",
+        "value": 29000,
+        "description": "8주 맞춤 식단 플랜 + 레시피 80개"
+      },
+      {
+        "name": "온라인 코칭 1회",
+        "value": 50000,
+        "description": "영양사와 1:1 화상 상담 30분"
+      }
+    ],
+    "guarantee_days": 30,
+    "guarantee_description": "30일 내 효과 없으면 100% 환불. 이유 묻지 않습니다."
+  },
+  "section_overrides": {}
+}

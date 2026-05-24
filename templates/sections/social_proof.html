@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<script src="https://cdn.tailwindcss.com"></script>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { width: 1200px; font-family: 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif; }
+  .section-wrapper { width: 1200px; min-height: 650px; position: relative; overflow: hidden; }
+  .bg-image { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; z-index: 0; opacity: 0.2; }
+  .content { position: relative; z-index: 2; }
+</style>
+</head>
+<body>
+<div class="section-wrapper" style="background: {{ color_secondary }};">
+  <img src="{{ background }}" class="bg-image" alt="">
+  <div class="content px-20 py-14">
+    <h2 class="text-center text-white text-4xl font-black mb-10">{{ copy.headline }}</h2>
+    <div class="grid grid-cols-3 gap-6 mb-10">
+      {% for stat in copy.stats %}
+      <div class="text-center bg-white bg-opacity-10 rounded-2xl py-6 px-4">
+        <div class="text-4xl font-black mb-2" style="color: {{ color_primary }};">{{ stat.number }}</div>
+        <div class="text-gray-300 text-sm">{{ stat.label }}</div>
+      </div>
+      {% endfor %}
+    </div>
+    {% if copy.featured_review %}
+    <div class="bg-white rounded-2xl p-8 max-w-3xl mx-auto">
+      <div class="flex gap-2 mb-4">⭐⭐⭐⭐⭐</div>
+      <p class="text-gray-800 text-lg leading-relaxed italic mb-4">"{{ copy.featured_review.quote }}"</p>
+      <div class="flex items-center gap-3">
+        <div class="w-10 h-10 rounded-full flex items-center justify-center text-white font-bold text-sm" style="background: {{ color_primary }};">{{ copy.featured_review.name[0] }}</div>
+        <div>
+          <p class="font-bold text-gray-800">{{ copy.featured_review.name }}</p>
+          <p class="text-sm font-bold" style="color: {{ color_primary }};">{{ copy.featured_review.result }}</p>
+        </div>
+      </div>
+    </div>
+    {% endif %}
+  </div>
+</div>
+</body>
+</html>

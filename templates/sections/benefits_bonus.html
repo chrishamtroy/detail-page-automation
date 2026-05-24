@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<script src="https://cdn.tailwindcss.com"></script>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { width: 1200px; font-family: 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif; }
+  .section-wrapper { width: 1200px; min-height: 700px; position: relative; overflow: hidden; background: #fffaf7; }
+  .bg-image { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; z-index: 0; opacity: 0.1; }
+  .content { position: relative; z-index: 2; }
+</style>
+</head>
+<body>
+<div class="section-wrapper">
+  <img src="{{ background }}" class="bg-image" alt="">
+  <div class="content px-20 py-14">
+    <h2 class="text-center text-4xl font-black mb-12" style="color: {{ color_secondary }};">{{ copy.headline }}</h2>
+    <div class="grid grid-cols-2 gap-5 mb-12">
+      {% for benefit in copy.main_benefits %}
+      <div class="flex items-start gap-4 bg-white rounded-xl p-5 shadow-sm">
+        <span class="text-3xl">{{ benefit.icon }}</span>
+        <div>
+          <h3 class="font-black text-lg mb-1" style="color: {{ color_secondary }};">{{ benefit.title }}</h3>
+          <p class="text-gray-600 text-sm leading-relaxed">{{ benefit.description }}</p>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+    <div class="border-2 rounded-2xl p-8" style="border-color: {{ color_primary }}; background: linear-gradient(135deg, {{ color_primary }}10, transparent);">
+      <p class="text-center font-black text-xl mb-4" style="color: {{ color_primary }};">🎁 {{ copy.bonus_headline }}</p>
+      {% for bonus in offer.bonus_items %}
+      <div class="flex items-center justify-between bg-white rounded-xl p-4 mb-3">
+        <p class="font-bold" style="color: {{ color_secondary }};">{{ bonus.name }}</p>
+        <p class="text-gray-400 line-through text-sm">{{ bonus.value | comma }}원</p>
+      </div>
+      {% endfor %}
+      <p class="text-center font-black text-2xl mt-6" style="color: {{ color_primary }};">{{ copy.total_value_text }}</p>
+    </div>
+  </div>
+</div>
+</body>
+</html>

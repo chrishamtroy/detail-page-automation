@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<script src="https://cdn.tailwindcss.com"></script>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { width: 1200px; font-family: 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif; }
+  .section-wrapper { width: 1200px; min-height: 600px; position: relative; overflow: hidden; }
+  .bg-image { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; z-index: 0; }
+  .bg-overlay { position: absolute; inset: 0; z-index: 1; background: rgba(20,20,40,0.82); }
+  .content { position: relative; z-index: 2; }
+</style>
+</head>
+<body>
+<div class="section-wrapper">
+  <img src="{{ background }}" class="bg-image" alt="">
+  <div class="bg-overlay"></div>
+  <div class="content px-20 py-16">
+    <p class="text-center text-gray-300 text-2xl font-bold mb-12">{{ copy.intro }}</p>
+    <div class="grid grid-cols-2 gap-6 mb-12">
+      {% for point in copy.pain_points %}
+      <div class="flex items-start gap-4 bg-white bg-opacity-10 rounded-2xl p-6 border border-white border-opacity-10">
+        <span class="text-3xl mt-1">😔</span>
+        <p class="text-white text-lg leading-relaxed">{{ point }}</p>
+      </div>
+      {% endfor %}
+    </div>
+    <p class="text-center font-bold text-xl" style="color: {{ color_primary }};">{{ copy.emotional_hook }}</p>
+  </div>
+</div>
+</body>
+</html>

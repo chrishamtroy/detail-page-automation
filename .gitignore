@@ -1,0 +1,10 @@
+.env
+output/**/*.png
+output/**/*.html
+!output/.gitkeep
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+*.egg-info/
+.DS_Store

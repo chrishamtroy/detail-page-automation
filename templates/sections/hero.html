@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<script src="https://cdn.tailwindcss.com"></script>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { width: 1200px; font-family: 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif; }
+  .section-wrapper { width: 1200px; min-height: 700px; position: relative; overflow: hidden; }
+  .bg-image { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; z-index: 0; }
+  .bg-overlay { position: absolute; inset: 0; z-index: 1; background: linear-gradient(135deg, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0.4) 100%); }
+  .content { position: relative; z-index: 2; }
+</style>
+</head>
+<body>
+<div class="section-wrapper">
+  <img src="{{ background }}" class="bg-image" alt="">
+  <div class="bg-overlay"></div>
+  <div class="content px-20 py-16 flex flex-col items-center justify-center min-h-[700px]">
+    {% if copy.urgency_badge %}
+    <div class="mb-6 px-6 py-2 rounded-full text-white text-sm font-bold tracking-wider" style="background-color: {{ color_primary }};">
+      {{ copy.urgency_badge }}
+    </div>
+    {% endif %}
+    <h1 class="text-center text-white font-black leading-tight mb-6" style="font-size: 3.5rem; line-height: 1.2; text-shadow: 0 2px 20px rgba(0,0,0,0.5);">
+      {{ copy.headline_options[0] if copy.headline_options else '' }}
+    </h1>
+    <p class="text-center text-gray-200 text-xl mb-10 max-w-3xl leading-relaxed" style="text-shadow: 0 1px 8px rgba(0,0,0,0.5);">
+      {{ copy.subheadline }}
+    </p>
+    <button class="px-16 py-5 rounded-full text-white text-xl font-black shadow-2xl transform hover:scale-105 transition-all" style="background: linear-gradient(135deg, {{ color_primary }}, #ff4500); box-shadow: 0 8px 32px rgba(255,107,53,0.5);">
+      {{ copy.cta_text }}
+    </button>
+  </div>
+</div>
+</body>
+</html>

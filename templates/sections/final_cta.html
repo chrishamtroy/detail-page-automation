@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<script src="https://cdn.tailwindcss.com"></script>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { width: 1200px; font-family: 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif; }
+  .section-wrapper { width: 1200px; min-height: 600px; position: relative; overflow: hidden; }
+  .bg-image { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; z-index: 0; }
+  .bg-overlay { position: absolute; inset: 0; z-index: 1; background: linear-gradient(135deg, rgba(180,20,20,0.9) 0%, rgba(100,5,5,0.95) 100%); }
+  .content { position: relative; z-index: 2; }
+</style>
+</head>
+<body>
+<div class="section-wrapper">
+  <img src="{{ background }}" class="bg-image" alt="">
+  <div class="bg-overlay"></div>
+  <div class="content px-20 py-16 flex flex-col items-center justify-center min-h-[600px] text-center">
+    <p class="text-yellow-300 text-sm font-bold tracking-widest mb-4">{{ copy.urgency_text }}</p>
+    <h2 class="text-white text-5xl font-black mb-8 leading-tight max-w-3xl" style="text-shadow: 0 2px 20px rgba(0,0,0,0.5);">{{ copy.headline }}</h2>
+    <div class="mb-8">
+      <p class="text-red-200 line-through text-xl mb-1">정가 {{ product.original_price | comma }}원</p>
+      <p class="text-white text-5xl font-black">{{ copy.price_display }}</p>
+    </div>
+    <button class="px-20 py-6 rounded-full text-2xl font-black shadow-2xl mb-6" style="background: linear-gradient(135deg, #FFD700, #FFA500); color: #1a1a2e;">
+      {{ copy.cta_button }}
+    </button>
+    <p class="text-red-200 text-sm">{{ copy.closing }}</p>
+  </div>
+</div>
+</body>
+</html>

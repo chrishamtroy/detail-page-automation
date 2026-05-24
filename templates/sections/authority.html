@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<script src="https://cdn.tailwindcss.com"></script>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { width: 1200px; font-family: 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif; }
+  .section-wrapper { width: 1200px; min-height: 600px; position: relative; overflow: hidden; background: #0d1b2e; }
+  .bg-image { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; z-index: 0; opacity: 0.25; }
+  .content { position: relative; z-index: 2; }
+</style>
+</head>
+<body>
+<div class="section-wrapper">
+  <img src="{{ background }}" class="bg-image" alt="">
+  <div class="content px-20 py-14 grid grid-cols-2 gap-16 items-center min-h-[600px]">
+    <div>
+      <p class="text-gray-400 text-sm tracking-widest mb-3">EXPERT</p>
+      <h2 class="text-white text-4xl font-black mb-2">{{ authority.expert_name }}</h2>
+      <p class="mb-6" style="color: {{ color_primary }};">{{ authority.title }}</p>
+      <div class="flex flex-col gap-3 mb-8">
+        {% for cred in authority.credentials %}
+        <div class="flex items-center gap-3">
+          <span class="text-green-400">✓</span>
+          <p class="text-gray-300">{{ cred }}</p>
+        </div>
+        {% endfor %}
+      </div>
+      <p class="text-sm font-bold text-yellow-400 italic">"{{ copy.credential_highlight }}"</p>
+    </div>
+    <div class="bg-white bg-opacity-5 border border-white border-opacity-10 rounded-2xl p-8">
+      <p class="text-gray-300 text-sm mb-4">{{ copy.intro }}</p>
+      <p class="text-white text-lg leading-loose mb-6">{{ copy.personal_message }}</p>
+      <p class="text-sm font-bold" style="color: {{ color_primary }};">{{ copy.cta }}</p>
+    </div>
+  </div>
+</div>
+</body>
+</html>
